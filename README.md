@@ -1,4 +1,4 @@
-# Portal de Información - Centro Escolar 60157
+# Portal de Información - Centro Escolar Cantón Mizata - Código: 60157
 
 Este repositorio contiene el código fuente para el portal web estático del **Centro Escolar Cantón Mizata - 60157**, El Salvador. El proyecto ha sido desarrollado utilizando tecnologías web estándares (HTML5, CSS3 y JavaScript Vanilla) para garantizar ligereza y accesibilidad.
 
