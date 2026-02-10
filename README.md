@@ -16,3 +16,4 @@ Este proyecto nace como una **iniciativa personal e independiente** con el únic
 Este repositorio se publica de buena fe para mejorar la comunicación entre la escuela, los padres de familia y los estudiantes. No se busca infringir normativas institucionales, sino brindar una herramienta de apoyo tecnológica a la infraestructura escolar existente.
 
 ---
+
