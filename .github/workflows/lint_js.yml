@@ -15,12 +15,11 @@ jobs:
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
-      # 2. Configurar el entorno de Node.js
+      # 2. Configurar el entorno de Node.js (Actualizado a Node 24)
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 24
 
       # 3. Instalar las herramientas de verificación
       - name: Instalar ESLint y Plugins
