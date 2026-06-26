@@ -1,0 +1,33 @@
+name: Validar Código JavaScript
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  verificar-codigo:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descargar el código del repositorio
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      # 2. Configurar el entorno de Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. Instalar las herramientas de verificación
+      - name: Instalar ESLint y Plugins
+        run: |
+          npm init -y
+          npm install eslint eslint-plugin-html --save-dev
+
+      # 4. Ejecutar la verificación de código
+      - name: Ejecutar ESLint (Validación)
+        run: npx eslint "**/*.html" "src/**/*.js" --min-errors 1
