@@ -1,517 +1,905 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="assets/media/IconoGob-Solo.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Centro Escolar Cantón Mizata - Código de Infraestructura 60157. Ministerio de Educación, Gobierno de El Salvador.">
-    <meta name="theme-color" content="#0f172a">
-    <title>Centro Escolar Cantón Mizata</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    
-    <style>
-        /**
-         * Centro Escolar Cantón Mizata
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="shortcut icon"
+            href="assets/media/IconoGob-Solo.png"
+            type="image/x-icon"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Centro Escolar Cantón Mizata - Código de Infraestructura 60157. Ministerio de Educación, Gobierno de El Salvador."
+        />
+        <meta name="theme-color" content="#0f172a" />
+        <title>Centro Escolar Cantón Mizata</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+        <style>
+            /**
+         * Centro Escolar Cantón Mizata 60157
          * Dirección de Estándares Tecnológicos y de Diseño (Inspiración HIG Apple & Gobierno SV)
          */
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            letter-spacing: -0.011em;
-        }
+            html {
+                scroll-behavior: smooth;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                letter-spacing: -0.011em;
+            }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
-            color: #1d1d1f;
-            background-color: #f5f5f7;
-        }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                    "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
+                color: #1d1d1f;
+                background-color: #f5f5f7;
+            }
 
-        /* Colores Institucionales de El Salvador (Efecto Premium) */
-        .bg-gob-blue { background-color: #002f6c; }
-        .text-gob-blue { color: #002f6c; }
-        .border-gob-gold { border-color: #d4af37; }
-        .text-gob-gold { color: #b89028; }
+            /* Colores Institucionales de El Salvador (Efecto Premium) */
+            .bg-gob-blue {
+                background-color: #002f6c;
+            }
+            .text-gob-blue {
+                color: #002f6c;
+            }
+            .border-gob-gold {
+                border-color: #d4af37;
+            }
+            .text-gob-gold {
+                color: #b89028;
+            }
 
-        /* Navbar estilo Apple Glassmorphism */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
+            /* Navbar estilo Apple Glassmorphism */
+            .glass-nav {
+                background: rgba(255, 255, 255, 0.72);
+                backdrop-filter: saturate(180%) blur(20px);
+                -webkit-backdrop-filter: saturate(180%) blur(20px);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
 
-        /* Enlaces de navegación interactivos estilo Apple */
-        .nav-link-apple {
-            font-size: 0.88rem;
-            color: #515154;
-            transition: color 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            font-weight: 400;
-        }
-        .nav-link-apple:hover, .nav-link-apple.active {
-            color: #002f6c;
-            font-weight: 500;
-        }
+            /* Enlaces de navegación interactivos estilo Apple */
+            .nav-link-apple {
+                font-size: 0.88rem;
+                color: #515154;
+                transition: color 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                font-weight: 400;
+            }
+            .nav-link-apple:hover,
+            .nav-link-apple.active {
+                color: #002f6c;
+                font-weight: 500;
+            }
 
-        /* Contenedores y Secciones */
-        section {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
-        }
+            /* Contenedores y Secciones */
+            section {
+                display: none;
+                opacity: 0;
+                transform: translateY(10px);
+                transition:
+                    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                    opacity 0.4s ease;
+            }
 
-        section.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
+            section.active {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
 
-        /* Tarjetas de diseño Apple (Bento Box sutil) */
-        .apple-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
-        }
-        .apple-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-        }
+            /* Tarjetas de diseño Apple (Bento Box sutil) */
+            .apple-card {
+                background: #ffffff;
+                border-radius: 16px;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+                border: 1px solid rgba(0, 0, 0, 0.03);
+                transition:
+                    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                    box-shadow 0.3s ease;
+            }
+            .apple-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            }
 
-        /* Estilo de tablas limpias */
-        .apple-table th {
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            color: #86868b;
-        }
+            /* Estilo de tablas limpias */
+            .apple-table th {
+                font-weight: 600;
+                font-size: 0.85rem;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+                color: #86868b;
+            }
 
-        /* Ocultar barra de scroll pero mantener funcionalidad */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col justify-between">
+            /* Ocultar barra de scroll pero mantener funcionalidad */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen flex flex-col justify-between">
+        <div
+            class="bg-gob-blue text-white text-xs font-medium py-2 px-4 border-b border-gob-gold text-center tracking-wider uppercase"
+        >
+            Plataforma de Transparencia Institucional - CE60157
+        </div>
 
-    <div class="bg-gob-blue text-white text-xs font-medium py-2 px-4 border-b border-gob-gold text-center tracking-wider uppercase">
-        Plataforma de Transparencia Institucional - CE60157
-    </div>
+        <nav class="glass-nav sticky top-0 z-50 transition-all duration-300">
+            <div
+                class="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between"
+            >
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-2 h-5 bg-gob-blue border-r-2 border-gob-gold rounded-sm"
+                    ></div>
+                    <span
+                        class="text-sm font-semibold tracking-tight text-slate-900"
+                        >C.E. Cantón Mizata
+                        <span class="text-xs text-slate-400 font-normal ml-1"
+                            >| ID: 60157</span
+                        ></span
+                    >
+                </div>
 
-    <nav class="glass-nav sticky top-0 z-50 transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-2 h-5 bg-gob-blue border-r-2 border-gob-gold rounded-sm"></div>
-                <span class="text-sm font-semibold tracking-tight text-slate-900">C.E. Cantón Mizata <span class="text-xs text-slate-400 font-normal ml-1">| ID: 60157</span></span>
+                <ul class="hidden md:flex items-center space-x-8">
+                    <li>
+                        <button
+                            class="nav-link-apple active"
+                            data-target="inicio"
+                        >
+                            Inicio
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            class="nav-link-apple"
+                            data-target="estadisticas"
+                        >
+                            Estadísticas Detalladas
+                        </button>
+                    </li>
+                </ul>
+
+                <button
+                    id="menuBtn"
+                    class="md:hidden text-slate-800 text-lg focus:outline-none"
+                >
+                    ☰
+                </button>
             </div>
-            
-            <ul class="hidden md:flex items-center space-x-8">
-                <li><button class="nav-link-apple active" data-target="inicio">Inicio</button></li>
-                <li><button class="nav-link-apple" data-target="estadisticas">Estadísticas Detalladas</button></li>
-            </ul>
+        </nav>
 
-            <button id="menuBtn" class="md:hidden text-slate-800 text-lg focus:outline-none">☰</button>
+        <div
+            id="mobileMenu"
+            class="hidden glass-nav border-b border-slate-100 absolute w-full left-0 z-40 transition-all duration-200"
+        >
+            <div class="px-6 py-4 space-y-3">
+                <button
+                    class="block w-full text-left nav-link-apple active"
+                    data-target="inicio"
+                >
+                    Inicio
+                </button>
+                <button
+                    class="block w-full text-left nav-link-apple"
+                    data-target="estadisticas"
+                >
+                    Estadísticas Detalladas
+                </button>
+            </div>
         </div>
-    </nav>
 
-    <div id="mobileMenu" class="hidden glass-nav border-b border-slate-100 absolute w-full left-0 z-40 transition-all duration-200">
-        <div class="px-6 py-4 space-y-3">
-            <button class="block w-full text-left nav-link-apple active" data-target="inicio">Inicio</button>
-            <button class="block w-full text-left nav-link-apple" data-target="estadisticas">Estadísticas Detalladas</button>
-        </div>
-    </div>
+        <main class="flex-grow max-w-6xl w-full mx-auto px-6 py-12">
+            <section id="inicio" class="active">
+                <div
+                    class="mb-12 text-left grid grid-cols-1 lg:grid-cols-3 gap-6 items-start"
+                >
+                    <div class="lg:col-span-2">
+                        <span
+                            class="text-xs font-bold uppercase tracking-widest text-gob-gold block mb-2"
+                            >La Libertad Costa</span
+                        >
+                        <h2
+                            class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4"
+                        >
+                            Bienvenidos a nuestra plataforma de<br
+                                class="hidden md:inline"
+                            /><span class="text-gob-blue"
+                                >Transparencia y Estadistica.</span
+                            >
+                        </h2>
+                        <p
+                            class="text-lg text-slate-500 max-w-2xl font-normal leading-relaxed"
+                        >
+                            Comprometidos con la visión de país del Gobierno de
+                            El Salvador, ofrecemos formación integral desde los
+                            primeros años hasta el noveno grado, impulsando el
+                            talento de nuestra niñez en un entorno de seguridad
+                            y calidez.
+                        </p>
+                    </div>
+                    <!-- Información de Dirección -->
+                    <div
+                        class="apple-card p-6 bg-slate-50/50 border border-slate-200/60 w-full"
+                    >
+                        <span
+                            class="text-xs font-bold text-gob-blue uppercase tracking-wider block mb-2"
+                            >Administración Institucional</span
+                        >
+                        <div class="flex items-center space-x-3 mb-1">
+                            <div
+                                class="p-2 bg-blue-50 rounded-lg text-gob-blue"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">
+                                    Directora Local
+                                </p>
+                                <p class="text-sm font-bold text-slate-800">
+                                    Janeth Esmeralda Lue Morales
+                                </p>
+                                <!--<p class"text-sm font-bold text-slate-800">La educación es el motor de todo lo que hacemos. Este año, nuestra comunidad es más vibrante, diversa y ambiciosa que nunca. Presentamos el estado actual de nuestra matrícula: una estructura diseñada para el aprendizaje, nivel por nivel. </p>--->
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <main class="flex-grow max-w-6xl w-full mx-auto px-6 py-12">
-        
-        <section id="inicio" class="active">
-            <div class="mb-12 text-left grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                <div class="lg:col-span-2">
-                    <span class="text-xs font-bold uppercase tracking-widest text-gob-gold block mb-2">La Libertad Costa</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
-                        Bienvenidos a nuestra plataforma de<br class="hidden md:inline"><span class="text-gob-blue">Transparencia y Estadistica.</span>
+                <!-- Bento Grid de Infraestructura Reciente -->
+                <div class="mb-10">
+                    <span
+                        class="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-3"
+                        >Infraestructura y Recursos</span
+                    >
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="apple-card p-5 flex items-start space-x-4">
+                            <div
+                                class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-800">
+                                    Laboratorio de Ciencias
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    Espacio equipado para la experimentación
+                                    práctica y el desarrollo del pensamiento
+                                    científico.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="apple-card p-5 flex items-start space-x-4">
+                            <div
+                                class="p-3 bg-blue-50 text-blue-600 rounded-xl"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-800">
+                                    Centro de Cómputo
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    Tecnología de vanguardia y conectividad para
+                                    el aprendizaje digital y programación.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="apple-card p-5 flex items-start space-x-4">
+                            <div
+                                class="p-3 bg-amber-50 text-amber-600 rounded-xl"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-800">
+                                    Biblioteca Escolar
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    Un catálogo diverso de recursos impresos y
+                                    digitales que fomentan el hábito de la
+                                    lectura.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                    <div class="apple-card p-6">
+                        <span
+                            class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1"
+                            >Población Total</span
+                        >
+                        <div
+                            class="text-3xl font-bold tracking-tight text-slate-900"
+                        >
+                            182
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Alumnos Activos 2026
+                        </p>
+                    </div>
+                    <div class="apple-card p-6">
+                        <span
+                            class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1"
+                            >Masculinos</span
+                        >
+                        <div
+                            class="text-3xl font-bold tracking-tight text-gob-blue"
+                        >
+                            99
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            54.4% de la matrícula
+                        </p>
+                    </div>
+                    <div class="apple-card p-6">
+                        <span
+                            class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1"
+                            >Femeninas</span
+                        >
+                        <div
+                            class="text-3xl font-bold tracking-tight text-sky-600"
+                        >
+                            83
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            45.6% de la matrícula
+                        </p>
+                    </div>
+                    <div class="apple-card p-6">
+                        <span
+                            class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1"
+                            >Niveles</span
+                        >
+                        <div
+                            class="text-3xl font-bold tracking-tight text-slate-900"
+                        >
+                            12
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Desde Parvularia a 9°
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                    <div
+                        class="apple-card p-6 lg:col-span-1 flex flex-col justify-between"
+                    >
+                        <div>
+                            <h4
+                                class="text-base font-semibold text-slate-900 mb-1"
+                            >
+                                Equilibrio de Género
+                            </h4>
+                            <p class="text-xs text-slate-400 mb-4">
+                                Representación actual institucional.
+                            </p>
+                        </div>
+                        <div class="h-48 relative">
+                            <canvas id="generoChartInicio"></canvas>
+                        </div>
+                        <div
+                            class="mt-4 pt-4 border-t border-slate-50 text-xs text-slate-500 space-y-1"
+                        >
+                            <div class="flex justify-between">
+                                <span>Varones:</span
+                                ><span class="font-semibold text-slate-800"
+                                    >99</span
+                                >
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Niñas:</span
+                                ><span class="font-semibold text-slate-800"
+                                    >83</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="apple-card p-6 lg:col-span-2 flex flex-col justify-between"
+                    >
+                        <div>
+                            <h4
+                                class="text-base font-semibold text-slate-900 mb-1"
+                            >
+                                Distribución de Matrícula General
+                            </h4>
+                            <p class="text-xs text-slate-400 mb-4">
+                                Volumen estudiantil ordenado cronológicamente
+                                por ciclo.
+                            </p>
+                        </div>
+                        <div class="h-56 relative">
+                            <canvas id="gradoChartInicio"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="estadisticas">
+                <div class="mb-8">
+                    <span
+                        class="text-xs font-bold uppercase tracking-widest text-gob-blue block mb-2"
+                        >Módulo Analítico</span
+                    >
+                    <h2
+                        class="text-3xl font-extrabold tracking-tight text-slate-900"
+                    >
+                        Registro General Estadístico
                     </h2>
-                    <p class="text-lg text-slate-500 max-w-2xl font-normal leading-relaxed">
-                        Comprometidos con la visión de país del Gobierno de El Salvador, ofrecemos formación integral desde los primeros años hasta el noveno grado, impulsando el talento de nuestra niñez en un entorno de seguridad y calidez.
+                    <p class="text-sm text-slate-400 mt-1">
+                        Gobernanza de datos del Centro Escolar Cantón Mizata.
                     </p>
                 </div>
-                <!-- Información de Dirección -->
-                <div class="apple-card p-6 bg-slate-50/50 border border-slate-200/60 w-full">
-                    <span class="text-xs font-bold text-gob-blue uppercase tracking-wider block mb-2">Administración Institucional</span>
-                    <div class="flex items-center space-x-3 mb-1">
-                        <div class="p-2 bg-blue-50 rounded-lg text-gob-blue">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
+
+                <div class="apple-card p-6 mb-8">
+                    <div class="mb-4">
+                        <h4 class="text-base font-semibold text-slate-900">
+                            Comparativa Poblacional de Género por Aula
+                        </h4>
+                        <p class="text-xs text-slate-400">
+                            Análisis detallado que facilita la planificación de
+                            insumos y cupos escolares.
+                        </p>
+                    </div>
+                    <div class="h-80 relative">
+                        <canvas id="comparativoChartDetalle"></canvas>
+                    </div>
+                </div>
+
+                <div class="apple-card overflow-hidden">
+                    <div
+                        class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50"
+                    >
                         <div>
-                            <p class="text-xs text-slate-400 font-medium">Directora Local</p>
-                            <p class="text-sm font-bold text-slate-800">Janeth Esmeralda Lue Morales</p>
-                            <!--<p class"text-sm font-bold text-slate-800">La educación es el motor de todo lo que hacemos. Este año, nuestra comunidad es más vibrante, diversa y ambiciosa que nunca. Presentamos el estado actual de nuestra matrícula: una estructura diseñada para el aprendizaje, nivel por nivel. </p>--->
+                            <h4 class="text-sm font-semibold text-slate-800">
+                                Matriz Cuantitativa Oficial
+                            </h4>
+                            <p class="text-xs text-slate-400">
+                                Datos consolidados del año lectivo en curso.
+                            </p>
                         </div>
+                        <span
+                            class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium border border-emerald-100"
+                            >Auditado</span
+                        >
+                    </div>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table
+                            class="w-full text-left border-collapse apple-table"
+                        >
+                            <thead>
+                                <tr
+                                    class="bg-slate-50/70 border-b border-slate-100"
+                                >
+                                    <th class="px-6 py-3 text-xs">
+                                        Grado Institucional
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs">
+                                        Población Masculina
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs">
+                                        Población Femenina
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs">
+                                        Matrícula Consolidada
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody
+                                class="divide-y divide-slate-100 text-sm text-slate-600 font-normal"
+                            ></tbody>
+                            <tfoot>
+                                <tr
+                                    class="bg-slate-50/40 font-semibold text-slate-900 border-t border-slate-200"
+                                >
+                                    <td class="px-6 py-4">Total Global</td>
+                                    <td
+                                        class="px-6 py-4 text-center text-gob-blue text-base"
+                                        id="tableTotalM"
+                                    >
+                                        99
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center text-sky-600 text-base"
+                                        id="tableTotalF"
+                                    >
+                                        83
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center text-base bg-slate-100/50 font-bold"
+                                        id="tableTotalG"
+                                    >
+                                        182
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
-            </div>
+            </section>
+        </main>
 
-            <!-- Bento Grid de Infraestructura Reciente -->
-            <div class="mb-10">
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-3">Infraestructura y Recursos</span>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="apple-card p-5 flex items-start space-x-4">
-                        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800">Laboratorio de Ciencias</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Espacio equipado para la experimentación práctica y el desarrollo del pensamiento científico.</p>
-                        </div>
-                    </div>
-                    <div class="apple-card p-5 flex items-start space-x-4">
-                        <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800">Centro de Cómputo</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Tecnología de vanguardia y conectividad para el aprendizaje digital y programación.</p>
-                        </div>
-                    </div>
-                    <div class="apple-card p-5 flex items-start space-x-4">
-                        <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800">Biblioteca Escolar</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Un catálogo diverso de recursos impresos y digitales que fomentan el hábito de la lectura.</p>
-                        </div>
-                    </div>
+        <footer
+            class="bg-white border-t border-slate-100 py-10 mt-16 text-xs text-slate-400"
+        >
+            <div
+                class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+                <div class="space-y-2">
+                    <p class="font-semibold text-slate-800">
+                        Centro Escolar Cantón Mizata
+                    </p>
+                    <p>
+                        Código de Infraestructura:
+                        <span class="font-medium text-slate-600">60157</span>
+                    </p>
+                    <p>
+                        Distrito Escolar:
+                        <span class="font-medium text-slate-600"
+                            >La Libertad Costa</span
+                        >
+                    </p>
+                </div>
+                <div class="space-y-1">
+                    <p class="font-semibold text-slate-800">
+                        Marco Legal y Normativo
+                    </p>
+                    <p>
+                        Este sitio está realizado bajo inciativa propia de la
+                        institución
+                    </p>
+                    <p>Plataforma de Transparencia Institucional</p>
+                </div>
+                <div class="md:text-right space-y-2">
+                    <p>
+                        &copy; 2026 Centro Escolar Cantón Mizata. Todos los
+                        derechos reservados.
+                    </p>
+                    <p class="text-[10px] text-slate-300">
+                        Desarrollado bajo pautas estricta de accesibilidad y
+                        alto rendimiento UI.
+                    </p>
                 </div>
             </div>
+        </footer>
 
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-                <div class="apple-card p-6">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Población Total</span>
-                    <div class="text-3xl font-bold tracking-tight text-slate-900">182</div>
-                    <p class="text-xs text-slate-400 mt-1">Alumnos Activos 2026</p>
-                </div>
-                <div class="apple-card p-6">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Masculinos</span>
-                    <div class="text-3xl font-bold tracking-tight text-gob-blue">99</div>
-                    <p class="text-xs text-slate-400 mt-1">54.4% de la matrícula</p>
-                </div>
-                <div class="apple-card p-6">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Femeninas</span>
-                    <div class="text-3xl font-bold tracking-tight text-sky-600">83</div>
-                    <p class="text-xs text-slate-400 mt-1">45.6% de la matrícula</p>
-                </div>
-                <div class="apple-card p-6">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Niveles</span>
-                    <div class="text-3xl font-bold tracking-tight text-slate-900">12</div>
-                    <p class="text-xs text-slate-400 mt-1">Desde Parvularia a 9°</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-                <div class="apple-card p-6 lg:col-span-1 flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-base font-semibold text-slate-900 mb-1">Equilibrio de Género</h4>
-                        <p class="text-xs text-slate-400 mb-4">Representación actual institucional.</p>
-                    </div>
-                    <div class="h-48 relative">
-                        <canvas id="generoChartInicio"></canvas>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-slate-50 text-xs text-slate-500 space-y-1">
-                        <div class="flex justify-between"><span>Varones:</span><span class="font-semibold text-slate-800">99</span></div>
-                        <div class="flex justify-between"><span>Niñas:</span><span class="font-semibold text-slate-800">83</span></div>
-                    </div>
-                </div>
-
-                <div class="apple-card p-6 lg:col-span-2 flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-base font-semibold text-slate-900 mb-1">Distribución de Matrícula General</h4>
-                        <p class="text-xs text-slate-400 mb-4">Volumen estudiantil ordenado cronológicamente por ciclo.</p>
-                    </div>
-                    <div class="h-56 relative">
-                        <canvas id="gradoChartInicio"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="estadisticas">
-            <div class="mb-8">
-                <span class="text-xs font-bold uppercase tracking-widest text-gob-blue block mb-2">Módulo Analítico</span>
-                <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Registro General Estadístico</h2>
-                <p class="text-sm text-slate-400 mt-1">Gobernanza de datos del Centro Escolar Cantón Mizata.</p>
-            </div>
-
-            <div class="apple-card p-6 mb-8">
-                <div class="mb-4">
-                    <h4 class="text-base font-semibold text-slate-900">Comparativa Poblacional de Género por Aula</h4>
-                    <p class="text-xs text-slate-400">Análisis detallado que facilita la planificación de insumos y cupos escolares.</p>
-                </div>
-                <div class="h-80 relative">
-                    <canvas id="comparativoChartDetalle"></canvas>
-                </div>
-            </div>
-
-            <div class="apple-card overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <div>
-                        <h4 class="text-sm font-semibold text-slate-800">Matriz Cuantitativa Oficial</h4>
-                        <p class="text-xs text-slate-400">Datos consolidados del año lectivo en curso.</p>
-                    </div>
-                    <span class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium border border-emerald-100">Auditado</span>
-                </div>
-                <div class="overflow-x-auto no-scrollbar">
-                    <table class="w-full text-left border-collapse apple-table">
-                        <thead>
-                            <tr class="bg-slate-50/70 border-b border-slate-100">
-                                <th class="px-6 py-3 text-xs">Grado Institucional</th>
-                                <th class="px-6 py-3 text-center text-xs">Población Masculina</th>
-                                <th class="px-6 py-3 text-center text-xs">Población Femenina</th>
-                                <th class="px-6 py-3 text-center text-xs">Matrícula Consolidada</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 text-sm text-slate-600 font-normal">
-                            </tbody>
-                        <tfoot>
-                            <tr class="bg-slate-50/40 font-semibold text-slate-900 border-t border-slate-200">
-                                <td class="px-6 py-4">Total Global</td>
-                                <td class="px-6 py-4 text-center text-gob-blue text-base" id="tableTotalM">99</td>
-                                <td class="px-6 py-4 text-center text-sky-600 text-base" id="tableTotalF">83</td>
-                                <td class="px-6 py-4 text-center text-base bg-slate-100/50 font-bold" id="tableTotalG">182</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-white border-t border-slate-100 py-10 mt-16 text-xs text-slate-400">
-        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="space-y-2">
-                <p class="font-semibold text-slate-800">Centro Escolar Cantón Mizata</p>
-                <p>Código de Infraestructura: <span class="font-medium text-slate-600">60157</span></p>
-                <p>Distrito Escolar: <span class="font-medium text-slate-600">La Libertad Costa</span></p>
-            </div>
-            <div class="space-y-1">
-                <p class="font-semibold text-slate-800">Marco Legal y Normativo</p>
-                <p>Este sitio está realizado bajo inciativa propia de la institución</p>
-                <p>Plataforma de Transparencia Institucional</p>
-            </div>
-            <div class="md:text-right space-y-2">
-                <p>&copy; 2026 Centro Escolar Cantón Mizata. Todos los derechos reservados.</p>
-                <p class="text-[10px] text-slate-300">Desarrollado bajo pautas estricta de accesibilidad y alto rendimiento UI.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // DATA-STORE CENTRALIZADO (Single Source of Truth)
-        const AppStore = {
-            grados: [
-                { nombre: 'Parvularia 4 años', m: 1, f: 3 },
-                { nombre: 'Parvularia 5 años', m: 3, f: 4 },
-                { nombre: 'Parvularia 6 años', m: 11, f: 4 },
-                { nombre: 'Primer Grado', m: 7, f: 13 },
-                { nombre: 'Segundo Grado', m: 11, f: 5 },
-                { nombre: 'Tercer Grado', m: 16, f: 9 },
-                { nombre: 'Cuarto Grado', m: 17, f: 19 },
-                { nombre: 'Quinto Grado', m: 20, f: 11 },
-                { nombre: 'Sexto Grado', m: 12, f: 10 },
-                { nombre: 'Séptimo Grado', m: 16, f: 13 },
-                { nombre: 'Octavo Grado', m: 14, f: 10 },
-                { nombre: 'Noveno Grado', m: 14, f: 11 }
-            ],
-            chartInstances: {},
-            get Totales() {
-                return this.grados.reduce((acc, current) => {
-                    acc.m += current.m;
-                    acc.f += current.f;
-                    acc.t += (current.m + current.f);
-                    return acc;
-                }, { m: 0, f: 0, t: 0 });
-            }
-        };
-
-        // ENRUTADOR DE VISTAS (Navegación nativa fluida)
-        function navigateTo(sectionId, clickedButton) {
-            // Desactivar secciones previas
-            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-link-apple').forEach(lnk => lnk.classList.remove('active'));
-            
-            // Activar nueva sección
-            const activeSection = document.getElementById(sectionId);
-            if(activeSection) {
-                activeSection.classList.add('active');
-                
-                // Buscar el botón correspondiente para iluminarlo
-                document.querySelectorAll(`.nav-link-apple[data-target="${sectionId}"]`).forEach(btn => {
-                    btn.classList.add('active');
-                });
-
-                // Inicializar o redibujar charts específicos de la sección activa
-                renderSectionCharts(sectionId);
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // CONTROLADOR DE GRÁFICOS (Renderizado Dinámico Segmentado para evitar lag en carga)
-        function renderSectionCharts(sectionId) {
-            const fontConfig = { family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto', size: 11 };
-            
-            // Destruir instancias obsoletas para prevenir fugas de memoria
-            if (AppStore.chartInstances[sectionId]) {
-                AppStore.chartInstances[sectionId].forEach(chart => chart.destroy());
-            }
-            AppStore.chartInstances[sectionId] = [];
-
-            if (sectionId === 'inicio') {
-                // Chart de Género (Doughnut minimalista Apple style)
-                const ctxGen = document.getElementById('generoChartInicio')?.getContext('2d');
-                if (ctxGen) {
-                    const chartGen = new Chart(ctxGen, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Masculino', 'Femenino'],
-                            datasets: [{
-                                data: [AppStore.Totales.m, AppStore.Totales.f],
-                                backgroundColor: ['#002f6c', '#38bdf8'],
-                                borderWidth: 4,
-                                borderColor: '#ffffff',
-                                hoverOffset: 4
-                            }]
+        <script>
+            // DATA-STORE CENTRALIZADO (Single Source of Truth)
+            const AppStore = {
+                grados: [
+                    { nombre: "Parvularia 4 años", m: 1, f: 3 },
+                    { nombre: "Parvularia 5 años", m: 3, f: 4 },
+                    { nombre: "Parvularia 6 años", m: 11, f: 4 },
+                    { nombre: "Primer Grado", m: 7, f: 13 },
+                    { nombre: "Segundo Grado", m: 11, f: 5 },
+                    { nombre: "Tercer Grado", m: 16, f: 9 },
+                    { nombre: "Cuarto Grado", m: 17, f: 19 },
+                    { nombre: "Quinto Grado", m: 20, f: 11 },
+                    { nombre: "Sexto Grado", m: 12, f: 10 },
+                    { nombre: "Séptimo Grado", m: 16, f: 13 },
+                    { nombre: "Octavo Grado", m: 14, f: 10 },
+                    { nombre: "Noveno Grado", m: 14, f: 11 },
+                ],
+                chartInstances: {},
+                get Totales() {
+                    return this.grados.reduce(
+                        (acc, current) => {
+                            acc.m += current.m;
+                            acc.f += current.f;
+                            acc.t += current.m + current.f;
+                            return acc;
                         },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: '78%',
-                            plugins: {
-                                legend: { position: 'bottom', labels: { font: fontConfig, boxWidth: 10, padding: 15 } }
-                            }
-                        }
-                    });
-                    AppStore.chartInstances['inicio'].push(chartGen);
+                        { m: 0, f: 0, t: 0 },
+                    );
+                },
+            };
+
+            // ENRUTADOR DE VISTAS (Navegación nativa fluida)
+            function navigateTo(sectionId, clickedButton) {
+                // Desactivar secciones previas
+                document
+                    .querySelectorAll("section")
+                    .forEach((sec) => sec.classList.remove("active"));
+                document
+                    .querySelectorAll(".nav-link-apple")
+                    .forEach((lnk) => lnk.classList.remove("active"));
+
+                // Activar nueva sección
+                const activeSection = document.getElementById(sectionId);
+                if (activeSection) {
+                    activeSection.classList.add("active");
+
+                    // Buscar el botón correspondiente para iluminarlo
+                    document
+                        .querySelectorAll(
+                            `.nav-link-apple[data-target="${sectionId}"]`,
+                        )
+                        .forEach((btn) => {
+                            btn.classList.add("active");
+                        });
+
+                    // Inicializar o redibujar charts específicos de la sección activa
+                    renderSectionCharts(sectionId);
                 }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
 
-                // Chart de Barras de Matrícula General (Barras verticales refinadas)
-                const ctxGrad = document.getElementById('gradoChartInicio')?.getContext('2d');
-                if (ctxGrad) {
-                    const chartGrad = new Chart(ctxGrad, {
-                        type: 'bar',
-                        data: {
-                            labels: AppStore.grados.map(g => g.nombre),
-                            datasets: [{
-                                data: AppStore.grados.map(g => g.m + g.f),
-                                backgroundColor: 'rgba(0, 47, 108, 0.08)',
-                                hoverBackgroundColor: '#002f6c',
-                                borderRadius: 6,
-                                borderSkipped: false
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: fontConfig, color: '#86868b' } },
-                                y: { border: { dash: [4, 4] }, grid: { color: '#e5e7eb' }, ticks: { font: fontConfig, color: '#86868b' } }
-                            }
-                        }
-                    });
-                    AppStore.chartInstances['inicio'].push(chartGrad);
+            // CONTROLADOR DE GRÁFICOS (Renderizado Dinámico Segmentado para evitar lag en carga)
+            function renderSectionCharts(sectionId) {
+                const fontConfig = {
+                    family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto',
+                    size: 11,
+                };
+
+                // Destruir instancias obsoletas para prevenir fugas de memoria
+                if (AppStore.chartInstances[sectionId]) {
+                    AppStore.chartInstances[sectionId].forEach((chart) =>
+                        chart.destroy(),
+                    );
                 }
-            } 
-            
-            else if (sectionId === 'estadisticas') {
-                // Chart Avanzado de Comparativa de Géneros (Doble Barra Lateral)
-                const ctxComp = document.getElementById('comparativoChartDetalle')?.getContext('2d');
-                if (ctxComp) {
-                    const chartComp = new Chart(ctxComp, {
-                        type: 'bar',
-                        data: {
-                            labels: AppStore.grados.map(g => g.nombre),
-                            datasets: [
-                                {
-                                    label: 'Niños (M)',
-                                    data: AppStore.grados.map(g => g.m),
-                                    backgroundColor: '#002f6c',
-                                    borderRadius: 4
-                                },
-                                {
-                                    label: 'Niñas (F)',
-                                    data: AppStore.grados.map(g => g.f),
-                                    backgroundColor: '#38bdf8',
-                                    borderRadius: 4
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { position: 'top', labels: { font: fontConfig, boxWidth: 12 } }
+                AppStore.chartInstances[sectionId] = [];
+
+                if (sectionId === "inicio") {
+                    // Chart de Género (Doughnut minimalista Apple style)
+                    const ctxGen = document
+                        .getElementById("generoChartInicio")
+                        ?.getContext("2d");
+                    if (ctxGen) {
+                        const chartGen = new Chart(ctxGen, {
+                            type: "doughnut",
+                            data: {
+                                labels: ["Masculino", "Femenino"],
+                                datasets: [
+                                    {
+                                        data: [
+                                            AppStore.Totales.m,
+                                            AppStore.Totales.f,
+                                        ],
+                                        backgroundColor: ["#002f6c", "#38bdf8"],
+                                        borderWidth: 4,
+                                        borderColor: "#ffffff",
+                                        hoverOffset: 4,
+                                    },
+                                ],
                             },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: fontConfig, color: '#86868b' } },
-                                y: { border: { dash: [4, 4] }, grid: { color: '#e5e7eb' }, ticks: { font: fontConfig, color: '#86868b' } }
-                            }
-                        }
-                    });
-                    AppStore.chartInstances['estadisticas'].push(chartComp);
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: "78%",
+                                plugins: {
+                                    legend: {
+                                        position: "bottom",
+                                        labels: {
+                                            font: fontConfig,
+                                            boxWidth: 10,
+                                            padding: 15,
+                                        },
+                                    },
+                                },
+                            },
+                        });
+                        AppStore.chartInstances["inicio"].push(chartGen);
+                    }
+
+                    // Chart de Barras de Matrícula General (Barras verticales refinadas)
+                    const ctxGrad = document
+                        .getElementById("gradoChartInicio")
+                        ?.getContext("2d");
+                    if (ctxGrad) {
+                        const chartGrad = new Chart(ctxGrad, {
+                            type: "bar",
+                            data: {
+                                labels: AppStore.grados.map((g) => g.nombre),
+                                datasets: [
+                                    {
+                                        data: AppStore.grados.map(
+                                            (g) => g.m + g.f,
+                                        ),
+                                        backgroundColor:
+                                            "rgba(0, 47, 108, 0.08)",
+                                        hoverBackgroundColor: "#002f6c",
+                                        borderRadius: 6,
+                                        borderSkipped: false,
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    x: {
+                                        grid: { display: false },
+                                        ticks: {
+                                            font: fontConfig,
+                                            color: "#86868b",
+                                        },
+                                    },
+                                    y: {
+                                        border: { dash: [4, 4] },
+                                        grid: { color: "#e5e7eb" },
+                                        ticks: {
+                                            font: fontConfig,
+                                            color: "#86868b",
+                                        },
+                                    },
+                                },
+                            },
+                        });
+                        AppStore.chartInstances["inicio"].push(chartGrad);
+                    }
+                } else if (sectionId === "estadisticas") {
+                    // Chart Avanzado de Comparativa de Géneros (Doble Barra Lateral)
+                    const ctxComp = document
+                        .getElementById("comparativoChartDetalle")
+                        ?.getContext("2d");
+                    if (ctxComp) {
+                        const chartComp = new Chart(ctxComp, {
+                            type: "bar",
+                            data: {
+                                labels: AppStore.grados.map((g) => g.nombre),
+                                datasets: [
+                                    {
+                                        label: "Niños (M)",
+                                        data: AppStore.grados.map((g) => g.m),
+                                        backgroundColor: "#002f6c",
+                                        borderRadius: 4,
+                                    },
+                                    {
+                                        label: "Niñas (F)",
+                                        data: AppStore.grados.map((g) => g.f),
+                                        backgroundColor: "#38bdf8",
+                                        borderRadius: 4,
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: "top",
+                                        labels: {
+                                            font: fontConfig,
+                                            boxWidth: 12,
+                                        },
+                                    },
+                                },
+                                scales: {
+                                    x: {
+                                        grid: { display: false },
+                                        ticks: {
+                                            font: fontConfig,
+                                            color: "#86868b",
+                                        },
+                                    },
+                                    y: {
+                                        border: { dash: [4, 4] },
+                                        grid: { color: "#e5e7eb" },
+                                        ticks: {
+                                            font: fontConfig,
+                                            color: "#86868b",
+                                        },
+                                    },
+                                },
+                            },
+                        });
+                        AppStore.chartInstances["estadisticas"].push(chartComp);
+                    }
                 }
             }
-        }
 
-        // COMPONENTE TABLA DINÁMICA (Inyección limpia de datos sanitizados)
-        function renderTableData() {
-            const tbody = document.querySelector('.apple-table tbody');
-            if(!tbody) return;
-            
-            tbody.innerHTML = AppStore.grados.map(g => `
+            // COMPONENTE TABLA DINÁMICA (Inyección limpia de datos sanitizados)
+            function renderTableData() {
+                const tbody = document.querySelector(".apple-table tbody");
+                if (!tbody) return;
+
+                tbody.innerHTML = AppStore.grados
+                    .map(
+                        (g) => `
                 <tr class="hover:bg-slate-50/80 transition-colors duration-150">
                     <td class="px-6 py-3.5 font-medium text-slate-900">${g.nombre}</td>
                     <td class="px-6 py-3.5 text-center font-mono text-slate-600">${g.m}</td>
                     <td class="px-6 py-3.5 text-center font-mono text-slate-600">${g.f}</td>
                     <td class="px-6 py-3.5 text-center font-semibold text-slate-800 bg-slate-50/30 font-mono">${g.m + g.f}</td>
                 </tr>
-            `).join('');
-        }
+            `,
+                    )
+                    .join("");
+            }
 
-        // INICIALIZADOR DE PROCESOS (DOM Ready execution standard)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Render de componentes reactivos puros
-            renderTableData();
-            
-            // Lanzamiento inicial de navegación por defecto
-            renderSectionCharts('inicio');
+            // INICIALIZADOR DE PROCESOS (DOM Ready execution standard)
+            document.addEventListener("DOMContentLoaded", () => {
+                // Render de componentes reactivos puros
+                renderTableData();
 
-            // Listeners de navegación unificados
-            document.querySelectorAll('.nav-link-apple').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const target = e.target.getAttribute('data-target');
-                    navigateTo(target, e.target);
-                    document.getElementById('mobileMenu').classList.add('hidden');
+                // Lanzamiento inicial de navegación por defecto
+                renderSectionCharts("inicio");
+
+                // Listeners de navegación unificados
+                document.querySelectorAll(".nav-link-apple").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        const target = e.target.getAttribute("data-target");
+                        navigateTo(target, e.target);
+                        document
+                            .getElementById("mobileMenu")
+                            .classList.add("hidden");
+                    });
                 });
-            });
 
-            // Toggle Menú Móvil
-            document.getElementById('menuBtn').addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.toggle('hidden');
+                // Toggle Menú Móvil
+                document
+                    .getElementById("menuBtn")
+                    .addEventListener("click", () => {
+                        document
+                            .getElementById("mobileMenu")
+                            .classList.toggle("hidden");
+                    });
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
